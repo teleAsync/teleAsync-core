@@ -1,10 +1,13 @@
+import os
+from dotenv import load_dotenv
 from pyrogram import Client, filters
 from pyrogram.types import Message
 import motor.motor_asyncio
 
-API_ID = 37770123
-API_HASH = "b99c784ccdfd6873696b6d423e318aca"
-BOT_TOKEN = "8726049487:AAHA08tTrHCJmBBiLz48DCSkmAwudi5llhQ"
+load_dotenv()
+api_id = os.geten("API_ID")
+api_hash = os.getenv("API_HASH")
+bot_token = os.getenv("BOT_TOKEN")
 
 OWNER_ID = 8695947788
 
