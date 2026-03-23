@@ -14,7 +14,7 @@ OWNER_ID = 8695947788
 mongo = motor.motor_asyncio.AsyncIOMotorClient("mongodb://localhost:27017")
 db = mongo.federation
 
-app = Client("ultra_fed", api_id=API_ID, api_hash=API_HASH, bot_token=BOT_TOKEN)
+app = Client("ultra_fed", api_id=api_id, api_hash=api_hash, bot_token=bot_token)
 
 # ---------- Helpers ----------
 
