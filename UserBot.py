@@ -1,5 +1,11 @@
-
+import asyncio
 from telethon import events, TelegramClient
+import os
+from dotenv import load_dotenv()
+
+load_dotenv()
+api_id = int(os.getenv("ApiID"))
+api_hash = os.getenv("ApiHash"))
 
 @client.on(events.NewMessage(pattern=r"\.info(?: |$)(.*)"))
 async def info(event):
