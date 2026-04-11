@@ -7,6 +7,7 @@ load_dotenv()
 api_id = int(os.getenv("ApiID"))
 api_hash = os.getenv("ApiHash"))
 
+client = TelegramClient("session_name",api_id,api_hash)
 @client.on(events.NewMessage(pattern=r"\.info(?: |$)(.*)"))
 async def info(event):
     user_input = event.pattern_match.group(1)
