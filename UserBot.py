@@ -140,12 +140,15 @@ async def dm_spam(event):
     if not reply:
         await event.reply('ᴿᵉᵖˡʸ ᵗᵒ ᵃ ᵐᵉˢˢᵃᵍᵉ ᵗᵒ ᴰᴹˢᵖᵃᵐ...')
         return
-    user = reply.sender_id
+  
     count = int(event.pattern_match.group(1))
-    message = event.pattern_match.group(2)
-    await event.reply(f'ˢᵖᵃᵐᵐⁱⁿᵍ {count} ᵐᵉˢˢᵃᵍᵉˢ..')
     if count > 20:
         return await event.reply("ᴸⁱᵐⁱᵗ ⁱˢ ²⁰")
+    
+    user = reply.sender_id
+    message = event.pattern_match.group(2)
+    await event.reply(f'ˢᵖᵃᵐᵐⁱⁿᵍ {count} ᵐᵉˢˢᵃᵍᵉˢ..')
+    
     for _ in range(count):
         await event.send_message(user, message)
         await asyncio.sleep(2)
