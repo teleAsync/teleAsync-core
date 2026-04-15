@@ -1,77 +1,51 @@
-import asyncio
 from telethon import events, TelegramClient
-import os
-from dotenv import load_dotenv()
+import asyncio
 
-load_dotenv()
-api_id = int(os.getenv("API_ID"))
-api_hash = os.getenv("API_HASH")
 
-client = TelegramClient("session_name",api_id,api_hash)
-@client.on(events.NewMessage(pattern=r"\.info(?: |$)(.*)"))
-async def info(event):
-    user_input = event.pattern_match.group(1)
+api_id = 37770123
+api_hash ="b99c784ccdfd6873696b6d423e318aca"
+OWNER_ID = 8695947788
 
-    # Get target user
-    if user_input:
-        user = await client.get_entity(user_input)
-    elif event.reply_to_msg_id:
-        reply = await event.get_reply_message()
-        user = await reply.get_sender()
-    else:
-        user = await event.get_sender()
+client = TelegramClient("UserBot",api_id,api_hash)
 
-    # Extract details
-    first_name = user.first_name or "N/A"
-    last_name = user.last_name or ""
-    username = f"@{user.username}" if user.username else "No username"
-    user_id = user.id
+@client.on(events.NewMessage(pattern=r"\.dmspam (\d+) (.+)"))
+async def dmspam(event):
+    if event.sender_id != OWNER_ID:
+        return 
 
-    # Send result
-    await event.reply(
-        f"👤 **User Info**\n\n"
-        f"• Name: {first_name} {last_name}\n"
-        f"• Username: {username}\n"
-        f"• ID: `{user_id}`"
-    )
-@client.on(events.NewMessage(pattern=r"\.spam (\d+) (.+)"))
-async def spam(event):
+    reply = await event.get_reply_message()
+
+    if not reply:
+        await event.reply("Reply to a message to dmspam")
+        return
+    user = reply.sender_id
+
     count = int(event.pattern_match.group(1))
     message = event.pattern_match.group(2)
 
-    if count > 50:
-        return await event.reply("❌ Limit is 50 messages (safety)")
+    await event.reply(f"spam {count} messages")
+    for _ in range(count):
+        await event.send_message(user, message)
+        
+        await asyncio.sleep(2)
 
-    await event.delete()
+    await event.reply('Done')
 
-    for i in range(count):
+@client.on(events.NewMessage(pattern=r"\.spam (\d+) (.+)"))
+async def spam(event):
+    if event.sender_id !=  OWNER_ID:
+        return
+    count= int(event.pattern_match.group(1))
+    await event.reply('started')
+    message= event.pattern_match.group(2)
+    for _ in range(count):
         await event.respond(message)
-        await asyncio.sleep(0.5) 
-@client.on(events.NewMessage(pattern=r"\.tagall(?: |$)(.*)"))
-async def tagall(event):
-    msg = event.pattern_match.group(1) or "Hello everyone!"
-    chat = await event.get_chat()
+        await asyncio.sleep(2)
 
-    await event.reply("📣 Starting mentions (rate-limited)…")
+async def main():
+    await client.start()
+    print('Started...')
+    await client.run_until_disconnected()
 
-    count = 0
-    async for user in client.iter_participants(chat):
-        if user.bot or user.deleted:
-            continue
-
-        try:
-            mention = f"[{user.first_name}](tg://user?id={user.id})"
-            await event.respond(f"{mention} {msg}")
-            count += 1
-            await asyncio.sleep(1.2)  # keep it safe
-        except Exception:
-            await asyncio.sleep(2)
-
-        if count >= 30:  # hard cap per run
-            break
-
-    await event.respond("✅ Done.")
-
-print("🚀 Userbot Running...")
-client.start()
-client.run_until_disconnected()
+if __name__ == '__main__':
+    asyncio.run(main())
