@@ -150,7 +150,7 @@ async def dm_spam(event):
     await event.reply(f'ˢᵖᵃᵐᵐⁱⁿᵍ {count} ᵐᵉˢˢᵃᵍᵉˢ..')
     
     for _ in range(count):
-        await event.send_message(user, message)
+        await client.send_message(user, message)
         await asyncio.sleep(2)
     await event.reply('ᴰᴹˢᵖᵃᵐ ᶜᵒᵐᵖˡᵉᵗᵉᵈ..')
 
