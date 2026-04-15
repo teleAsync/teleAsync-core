@@ -9,7 +9,7 @@ api_hash = os.getenv("API_HASH")
 session = os.getenv("SESSION")
 OWNER_ID = 8695947788
 
-bot = TelegramClient("userbot", api_id, api_hash)
+bot = TelegramClient(StringSession(session), api_id, api_hash)
 async def is_admin(event):
     perms = await bot.get_permissions(event.chat_id, event.sender_id)
     return perms.is_admin
