@@ -152,7 +152,7 @@ async def dm_spam(event):
     await event.reply('ᴰᴹˢᵖᵃᵐ ᶜᵒᵐᵖˡᵗᵉᵈ..')
 
 async def main():
-    await bot.start()
+    await bot.connect()
     print('Bot is running...')
     await bot.run_until_disconnected()
 
