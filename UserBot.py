@@ -6,7 +6,7 @@ import asyncio
 import os
 api_id = int(os.getenv("API_ID"))
 api_hash = os.getenv("API_HASH")
-session = os.getenv("SESSION")
+session = os.getenv("SESSION").replace("\n", "")
 OWNER_ID = 8695947788
 
 bot = TelegramClient(StringSession(session), api_id, api_hash)
