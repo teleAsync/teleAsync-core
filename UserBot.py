@@ -31,6 +31,7 @@ Premium: {getattr(user, 'premium', False)}
     await event.reply(text)
 
 async def main():
+    await client.start()
     await client.connect()
     print("Bot is running...")
     await client.run_until_disconnected()
